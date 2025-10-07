@@ -19,6 +19,7 @@ export default function Home() {
   const [date, setDate] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
+  const [category, setCategory] = useState("");
 
   const editor = useEditor({
     extensions: [
@@ -75,6 +76,7 @@ export default function Home() {
     setSubmitting(true);
     try {
       const payload = {
+        category,
         html,
         markets: selectedMarkets,
         client: selectedClient,
@@ -122,8 +124,20 @@ export default function Home() {
           <EditorContent editor={editor} />
         </div>
       </div>
-
-      <div style={styles.grid}>
+      <div style={styles.card}>
+      <div style={styles.cardTitle}>Category</div>
+      <input
+        placeholder="e.g., Sponsored | Lead Story"
+        value={category}
+        onChange={(e)=>setCategory(e.target.value)}
+        style={styles.input}
+      />
+      <div style={{marginTop:8, fontSize:12, color:"#666"}}>
+        Appears as an <code>&lt;h3&gt;</code> in the preview.
+      </div>
+    </div>
+                  
+            <div style={styles.grid}>
         <div style={styles.card}>
           <div style={styles.cardTitle}>Markets</div>
           <div style={{maxHeight:180, overflow:"auto", padding:"4px 0"}}>
@@ -156,7 +170,7 @@ export default function Home() {
             onChange={(e)=>setClientQuery(e.target.value)}
             style={styles.input}
           />
-          <div style={{maxHeight:180, overflow:"auto", border:"1px solid #eee", borderRadius:8}}>
+          <div tyle={{maxHeight:180, overflow:"auto", border:"1px solid #eee", borderRadius:8, marginTop:8}}>
             {clientOptions.length===0 ? (
               <div style={{padding:8, fontSize:13, color:"#888"}}>No matches</div>
             ) : clientOptions.map(c => (
@@ -191,6 +205,7 @@ export default function Home() {
 
       <div style={styles.card}>
         <div style={styles.cardTitle}>Preview</div>
+        {category && <h3 style={styles.h3}>{category}</h3>}
         <div
           style={styles.preview}
           dangerouslySetInnerHTML={{ __html: html }}
@@ -224,13 +239,14 @@ export default function Home() {
 
 const styles = {
   wrap: { maxWidth: 900, margin: "24px auto", padding: "0 16px", fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Arial" },
-  card: { border: "1px solid #eee", borderRadius: 12, padding: 16, margin: "12px 0", background:"#fff" },
+  card: { border: "1px solid #eee", borderRadius: 12, padding: 16, margin: "12px 0", background:"#fff", overflow: "hidden" },
   toolbar: { display:"flex", gap:8, flexWrap:"wrap", marginBottom:8 },
   btn: { border:"1px solid #ddd", padding:"6px 10px", borderRadius:8, background:"#fafafa", cursor:"pointer" },
   primaryBtn: { border:"1px solid #0a66c2", padding:"8px 14px", borderRadius:8, background:"#0a66c2", color:"#fff", cursor:"pointer" },
-  input: { width:"100%", padding:"8px 10px", border:"1px solid #ddd", borderRadius:8 },
+  input: { width:"100%", padding:"8px 10px", border:"1px solid #ddd", borderRadius:8, boxSizing:"border-box", display:"block" },
   editorShell: { border:"1px solid #eee", borderRadius:12, background:"#fff" },
-  grid: { display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12 },
+  grid: { display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, alignItems:"start" },
   cardTitle: { fontWeight:600, marginBottom:8 },
-  preview: { border:"1px solid #eee", borderRadius:12, padding:12, minHeight:60, background:"#fff" }
+  preview: { border:"1px solid #eee", borderRadius:12, padding:12, minHeight:60, background:"#fff" },
+  h3: { margin: "0 0 8px 0", fontSize: 18, fontWeight: 600 }
 };
