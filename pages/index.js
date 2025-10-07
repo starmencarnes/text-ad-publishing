@@ -112,9 +112,6 @@ export default function Home() {
         onChange={(e)=>setCategory(e.target.value)}
         style={styles.input}
       />
-      <div style={{marginTop:8, fontSize:12, color:"#666"}}>
-        Appears as an <code>&lt;h3&gt;</code> in the preview.
-      </div>
     </div>
       <div style={styles.card}>
         <div style={styles.toolbar}>
@@ -204,9 +201,9 @@ export default function Home() {
 
       <div style={styles.card}>
         <div style={styles.cardTitle}>Preview</div>
-        {category && <h3 style={styles.h3}>{category}</h3>}
         <div
           style={styles.preview}
+          {category && <h3 style={styles.h3}>{category}</h3>}
           dangerouslySetInnerHTML={{ __html: html }}
         />
         <div style={{display:"flex", justifyContent:"flex-end", gap:8}}>
