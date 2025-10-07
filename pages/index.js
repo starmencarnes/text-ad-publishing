@@ -103,9 +103,19 @@ export default function Home() {
 
   return (
     <div style={styles.wrap}>
-      <h1 style={{marginBottom:8}}>Writers Intake</h1>
-      <p style={{marginTop:0, color:"#666"}}>Rich text + markets + client + date</p>
-
+      <h1 style={{marginBottom:8}}>Text Ad Publishing</h1>
+      <div style={styles.card}>
+      <div style={styles.cardTitle}>Category</div>
+      <input
+        placeholder="e.g., Biz/Shop/Show"
+        value={category}
+        onChange={(e)=>setCategory(e.target.value)}
+        style={styles.input}
+      />
+      <div style={{marginTop:8, fontSize:12, color:"#666"}}>
+        Appears as an <code>&lt;h3&gt;</code> in the preview.
+      </div>
+    </div>
       <div style={styles.card}>
         <div style={styles.toolbar}>
           <button onClick={() => toggle("toggleBold")} style={styles.btn}><b>B</b></button>
@@ -124,18 +134,7 @@ export default function Home() {
           <EditorContent editor={editor} />
         </div>
       </div>
-      <div style={styles.card}>
-      <div style={styles.cardTitle}>Category</div>
-      <input
-        placeholder="e.g., Sponsored | Lead Story"
-        value={category}
-        onChange={(e)=>setCategory(e.target.value)}
-        style={styles.input}
-      />
-      <div style={{marginTop:8, fontSize:12, color:"#666"}}>
-        Appears as an <code>&lt;h3&gt;</code> in the preview.
-      </div>
-    </div>
+      
                   
             <div style={styles.grid}>
         <div style={styles.card}>
