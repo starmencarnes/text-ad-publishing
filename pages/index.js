@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -31,7 +31,17 @@ export default function Home() {
     editorProps: { attributes: { class: "editor" } },
   });
 
-  const html = useMemo(() => editor?.getHTML() ?? "", [editor, editor?.state]);
+  
+  const [html, setHtml] = useState("");
+  
+  // Right after you create `editor`:
+  useEffect(() => {
+    if (!editor) return;
+    setHtml(editor.getHTML());
+    const update = () => setHtml(editor.getHTML());
+    editor.on("update", update);
+    return () => editor.off("update", update);
+  }, [editor]);
 
   function toggle(cmd) {
     if (!editor) return;
@@ -55,7 +65,7 @@ export default function Home() {
   }, [clientQuery]);
 
   const isValid =
-    html.replace(/<p>\\s*<br\\/?><\\/p>/g, "").trim().length > 0 &&
+    html.replace(/<p>\s*<br\/?><\/p>/g, "").trim().length > 0 &&
     selectedMarkets.length > 0 &&
     selectedClient &&
     date;
@@ -76,7 +86,7 @@ export default function Home() {
         body: JSON.stringify(payload),
       });
       const out = await res.json();
-      alert("Submitted! (Echo):\\n" + JSON.stringify(out, null, 2));
+      alert("Submitted! (Echo):\n" + JSON.stringify(out, null, 2));
       // reset
       editor?.commands.clearContent();
       setSelectedMarkets([]);
